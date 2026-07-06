@@ -2494,12 +2494,18 @@ svg defs {
   overflow: visible !important;
 }
 
+.card-split-resort .offer-card-bg,
+.card-split-resort .offer-card-overlay {
+  border-radius: 32px;
+}
+
 .card-curved-cutout {
   position: absolute;
   bottom: -1px;
   left: -1px;
   background: #ffffff;
   border-top-right-radius: 28px;
+  border-bottom-left-radius: 32px;
   padding: 0.8rem 1.6rem;
   z-index: 4;
   border-top: 1px solid rgba(255, 255, 255, 0.95);
