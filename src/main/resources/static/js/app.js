@@ -3607,7 +3607,7 @@ document.addEventListener("DOMContentLoaded", () => {
             gsap.set(mtDest, { opacity: 0, filter: 'none', clearProps: 'transform,scale' });
           }
           if (mtBase) {
-            mtBase.style.backgroundImage = "url('images/destination-layer.png')";
+            mtBase.style.backgroundImage = "url('images/hero-bg.png')";
             gsap.set(mtBase, { filter: 'none', clearProps: 'transform,scale,background-position' });
           }
           if (btnPortalPrev) {
@@ -3894,7 +3894,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       switchTL.to(contentElements, { opacity: 0, y: -15, duration: 0.3, stagger: 0.05, ease: 'power2.in' });
-      switchTL.to([btnPortalPrev, btnPortalNext], { opacity: 0, scale: 0.9, duration: 0.3, ease: 'power2.in' }, 0);
+      const exitNavBtns = [btnPortalPrev, btnPortalNext].filter(Boolean);
+      if (exitNavBtns.length > 0) {
+        switchTL.to(exitNavBtns, { opacity: 0, scale: 0.9, duration: 0.3, ease: 'power2.in' }, 0);
+      }
 
       if (mtDest) {
         switchTL.to(mtDest, { opacity: 1, scale: 1.0, duration: 0.7, ease: 'power2.out' }, 0.2);
@@ -3991,7 +3994,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       switchTL.fromTo(contentElements, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: 'power2.out' });
-      switchTL.fromTo([btnPortalPrev, btnPortalNext], { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1.0, duration: 0.4, ease: 'power2.out' }, "-=0.3");
+      const enterNavBtns = [btnPortalPrev, btnPortalNext].filter(Boolean);
+      if (enterNavBtns.length > 0) {
+        switchTL.fromTo(enterNavBtns, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1.0, duration: 0.4, ease: 'power2.out' }, "-=0.3");
+      }
     }
 
     if (btnPortalPrev) {

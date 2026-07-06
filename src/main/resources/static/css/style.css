@@ -7192,19 +7192,14 @@ svg defs {
 .gs-bg-mountain {
   position: absolute;
   inset: 0;
-  background-image: url('../images/destination-layer.png');
+  background-image: url('../images/hero-bg.png');
   background-size: cover;
   background-position: center 35%;
   z-index: 1;
 }
 
 .gs-bg-surface {
-  position: absolute;
-  inset: 0;
-  background-image: url('../images/surface2.png');
-  background-size: cover;
-  background-position: center 35%;
-  z-index: 2;
+  display: none;
 }
 
 .gs-bg-mountain-dest {
@@ -7278,19 +7273,7 @@ svg defs {
 
 /* Foreground traveler cutout staying in front of cards and transition images */
 .gs-traveler {
-  position: absolute;
-  bottom: 7vh;
-  left: 0;
-  right: 0;
-  height: 32vh;
-  background-image: url('../images/traveler-cutout.png');
-  background-size: contain;
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  z-index: 100;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
+  display: none;
 }
 
 /* Left darkness — helps editorial text read */
@@ -7413,8 +7396,8 @@ svg defs {
 .gs-card {
   position: relative;
   flex-shrink: 0;
-  width: clamp(220px, 24vw, 350px);
-  height: clamp(220px, 24vw, 350px);
+  width: clamp(190px, 20vw, 280px);
+  height: clamp(190px, 20vw, 280px);
   border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
@@ -7471,13 +7454,12 @@ svg defs {
   z-index: 5;
 }
 
-/* Text content — bottom of card */
 .gs-card-body {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 20px 18px 18px;
+  padding: 18px 16px 16px;
   z-index: 4;
 }
 
@@ -7494,7 +7476,7 @@ svg defs {
 
 .gs-card-title {
   font-family: 'Neue Montreal', 'Inter', sans-serif;
-  font-size: clamp(20px, 2.2vw, 32px);
+  font-size: clamp(18px, 2.0vw, 28px);
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.01em;
@@ -7975,9 +7957,29 @@ svg defs {
   will-change: transform;
 }
 
-/* Keep card stage in place during portal mode */
+/* Keep card stage in place during portal mode and ensure it is fully hidden */
 .gs-hero.gs-portal-mode .gs-card-stage {
   z-index: 40;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.6s ease, visibility 0.6s ease !important;
+}
+
+.gs-hero.gs-portal-mode .gs-bg-surface {
+  display: block !important;
+  position: absolute;
+  inset: 0;
+  background-image: url('../images/hero-bg.png');
+  background-size: cover;
+  background-position: center 35%;
+  z-index: 2;
+  -webkit-mask-image: linear-gradient(to top, #000 45%, transparent 55%);
+  mask-image: linear-gradient(to top, #000 45%, transparent 55%);
+}
+
+.gs-hero.gs-portal-mode .gs-traveler {
+  display: none !important;
 }
 
 .gs-hero.gs-portal-mode .gs-card-track {
@@ -12858,18 +12860,7 @@ input:checked+.slider-switch:before {
 
 /* Portal Navigation Floating Cards */
 .gs-portal-nav-btn {
-  position: absolute;
-  top: 42%;
-  transform: translateY(-50%);
-  z-index: 101;
-  /* Higher than traveler cutout at 100, so they are clickable */
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: none !important;
 }
 
 .gs-portal-nav-btn--prev {
@@ -16148,7 +16139,7 @@ input:checked+.slider-switch:before {
     left: auto !important;
     bottom: auto !important;
     right: auto !important;
-    margin: 0 0 2.5rem 12px !important;
+    margin: 7.5rem 0 2.5rem 12px !important;
     max-width: 90% !important;
     text-align: left !important;
     display: flex !important;
