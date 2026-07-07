@@ -40,39 +40,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2.1 Navbar Hide/Show on Scroll Direction
   let lastScrollY = window.scrollY;
-  const headerWrapper = document.querySelector(".header-wrapper");
-  const scrollThreshold = 8; // min scroll change to trigger to prevent micro-stutter
+  const scrollThresholdUp = 4;   // very sensitive to show immediately on scroll up
+  const scrollThresholdDown = 12; // less sensitive to hide (prevents mobile/bounce hide bug)
 
   window.addEventListener("scroll", () => {
     const currentScrollY = window.scrollY;
 
-    // Always show near the top of the page
-    if (currentScrollY <= 80) {
-      if (headerWrapper) {
-        headerWrapper.classList.remove("header-hidden");
-      }
-      lastScrollY = currentScrollY;
+    // Normalize scroll position for iOS momentum bounce compatibility (prevents negative scroll values)
+    const normalizedScrollY = Math.max(0, currentScrollY);
+
+    const headerWrappers = document.querySelectorAll(
+      ".header-wrapper, .packages-header-wrapper, .destinations-header-wrapper, .dashboard-header-wrapper, .detail-header-wrapper"
+    );
+
+    // Always show at the very top of the page
+    if (normalizedScrollY <= 10) {
+      headerWrappers.forEach(h => h.classList.remove("header-hidden"));
+      lastScrollY = normalizedScrollY;
       return;
     }
 
-    // Avoid triggering on tiny scroll adjustments
-    if (Math.abs(currentScrollY - lastScrollY) < scrollThreshold) {
-      return;
-    }
+    const deltaY = normalizedScrollY - lastScrollY;
 
-    if (currentScrollY > lastScrollY) {
+    if (deltaY > scrollThresholdDown) {
       // Scroll Down - hide navbar
-      if (headerWrapper) {
-        headerWrapper.classList.add("header-hidden");
-      }
-    } else {
+      headerWrappers.forEach(h => h.classList.add("header-hidden"));
+      lastScrollY = normalizedScrollY;
+    } else if (deltaY < -scrollThresholdUp) {
       // Scroll Up - show navbar
-      if (headerWrapper) {
-        headerWrapper.classList.remove("header-hidden");
-      }
+      headerWrappers.forEach(h => h.classList.remove("header-hidden"));
+      lastScrollY = normalizedScrollY;
     }
-
-    lastScrollY = currentScrollY;
   }, { passive: true });
 
   // 3. Ambient Custom Cursor Glow and Background shift (Disabled per User Request)
@@ -1501,7 +1499,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Helper to map experience content to destination slugs or fallback path
   function getRedirectPathForExperience(title, desc) {
     const text = (title + " " + desc).toLowerCase();
-    
+
     if (text.includes("iceland")) return "/destination/iceland";
     if (text.includes("switzerland") || text.includes("swiss")) return "/destination/switzerland";
     if (text.includes("kyoto")) return "/destination/kyoto";
@@ -1516,7 +1514,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (text.includes("france") || text.includes("paris") || text.includes("versailles") || text.includes("french")) return "/destination/france";
     if (text.includes("egypt") || text.includes("nile") || text.includes("cairo")) return "/destination/egypt";
     if (text.includes("bali") || text.includes("indonesia")) return "/destination/indonesia";
-    
+
     return "/packages";
   }
 
@@ -2870,7 +2868,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const isMobile = window.innerWidth <= 768;
       const animDuration = animate ? 0.7 : 0;
-      
+
       if (isMobile) {
         // Reset track position on mobile to prevent interference
         gsap.set(track, { y: 0, clearProps: "transform" });
@@ -2961,7 +2959,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
               }
               if (titleEl) {
-                gsap.fromTo(titleEl, 
+                gsap.fromTo(titleEl,
                   { y: 18, opacity: 0 },
                   { y: 0, opacity: 1, duration: 0.6, ease: "power2.out", overwrite: "auto" }
                 );
@@ -3104,7 +3102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const viewportHeight = 720;
 
         const translateY = (viewportHeight / 2) - ((cardHeight + gap) * currentIndex + cardHeight / 2);
-        
+
         gsap.to(track, {
           y: translateY,
           duration: animDuration,
@@ -3260,7 +3258,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Click handler
         card.addEventListener("click", (e) => {
           if (e.target.closest(".wishlist-heart-btn") || e.target.closest(".trending-card-btn")) return;
-          
+
           const idx = parseInt(card.getAttribute("data-index"));
           if (idx === currentIndex) {
             // Tap active card -> Navigate directly to destination
@@ -4414,37 +4412,37 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-      // 4.5 Home navigation link or Brand Logo clicks
-      const homeLink = e.target.closest('#nav-link-home');
-      const brandLogo = e.target.closest('.brand-group') || e.target.closest('.menu-brand-group');
-      if (homeLink || brandLogo) {
-        e.preventDefault();
-        navigateBack();
+    // 4.5 Home navigation link or Brand Logo clicks
+    const homeLink = e.target.closest('#nav-link-home');
+    const brandLogo = e.target.closest('.brand-group') || e.target.closest('.menu-brand-group');
+    if (homeLink || brandLogo) {
+      e.preventDefault();
+      navigateBack();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      return;
+    }
+    // 5. Sub-navigation links
+    const subnavLink = e.target.closest('.subnav-link');
+    if (subnavLink) {
+      e.preventDefault();
+      const targetId = subnavLink.getAttribute('href');
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        const headerOffset = 180;
+        const elementPosition = targetEl.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - headerOffset;
+
         window.scrollTo({
-          top: 0,
+          top: offsetPosition,
           behavior: 'smooth'
         });
-        return;
       }
-      // 5. Sub-navigation links
-      const subnavLink = e.target.closest('.subnav-link');
-      if (subnavLink) {
-        e.preventDefault();
-        const targetId = subnavLink.getAttribute('href');
-        const targetEl = document.querySelector(targetId);
-        if (targetEl) {
-          const headerOffset = 180;
-          const elementPosition = targetEl.getBoundingClientRect().top + window.scrollY;
-          const offsetPosition = elementPosition - headerOffset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-        }
-        return;
-      }
-    });
+      return;
+    }
+  });
 
   function navigateToDestination(slug) {
     // Add dubai custom fallback data directly at runtime if not defined in destinations
@@ -4534,6 +4532,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function checkRoute() {
+    // Reset scroll reference to prevent layout scroll tracking mismatch on transition
+    lastScrollY = window.scrollY;
+
     const path = window.location.pathname;
     const hash = window.location.hash;
     let slug = null;
@@ -4572,6 +4573,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showNestDashboardView() {
+    updateNavbarHighlight('nest');
     if (isHomeVisible) {
       savedScrollY = window.scrollY;
       isHomeVisible = false;
@@ -4605,7 +4607,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nestDashboard = document.getElementById('nest-dashboard-view');
     if (nestDashboard) {
       nestDashboard.style.display = 'block';
-      gsap.fromTo(nestDashboard, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" });
+      gsap.fromTo(nestDashboard, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", onComplete: () => gsap.set(nestDashboard, { clearProps: "transform" }) });
     }
 
     // Trigger redesigned premium dashboard components
@@ -4825,7 +4827,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const wishlistView = document.getElementById('wishlist-view');
     if (wishlistView) {
       wishlistView.style.display = 'block';
-      gsap.fromTo(wishlistView, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" });
+      gsap.fromTo(wishlistView, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", onComplete: () => gsap.set(wishlistView, { clearProps: "transform" }) });
     }
 
     // Scroll to top
@@ -4848,13 +4850,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (filtered.length === 0) {
       grid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1.5rem; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 30px rgba(30, 26, 21, 0.05); margin: 0 auto; width: 100%; box-sizing: border-box;">
-          <i data-lucide="heart-off" style="width: 32px; height: 32px; color: var(--accent-gold); margin-bottom: 0.8rem; stroke-width: 1.5;"></i>
-          <h3 style="font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.4rem;">No Destinations Saved</h3>
-          <p style="font-family: var(--font-sans); font-size: 0.82rem; color: var(--text-muted); max-width: 300px; margin: 0 auto 1.2rem;">Tap the heart icon on destination cards to build your list.</p>
-          <button class="btn-dest-explore" id="btn-wishlist-dest-discover" style="margin: 0 auto; width: fit-content; padding: 0.6rem 1.5rem; font-size: 0.8rem;">
+        <div class="wishlist-empty-state" style="grid-column: 1 / -1;">
+          <i data-lucide="heart-off" style="width: 36px; height: 36px; color: var(--accent-gold); stroke-width: 1.5;"></i>
+          <h3>No Destinations Saved</h3>
+          <p>Tap the heart icon on destination cards to build your list.</p>
+          <button class="btn-wishlist-explore" id="btn-wishlist-dest-discover">
             <span>Discover Destinations</span>
-            <i data-lucide="compass" style="width: 14px; height: 14px; margin-left: 6px; vertical-align: middle;"></i>
+            <i data-lucide="compass" style="width: 15px; height: 15px;"></i>
           </button>
         </div>
       `;
@@ -4958,13 +4960,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (list.length === 0) {
       grid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1.5rem; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 30px rgba(30, 26, 21, 0.05); margin: 0 auto; width: 100%; box-sizing: border-box;">
-          <i data-lucide="heart-off" style="width: 32px; height: 32px; color: var(--accent-gold); margin-bottom: 0.8rem; stroke-width: 1.5;"></i>
-          <h3 style="font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.4rem;">No Packages Saved</h3>
-          <p style="font-family: var(--font-sans); font-size: 0.82rem; color: var(--text-muted); max-width: 300px; margin: 0 auto 1.2rem;">Tap the heart icon on holiday packages to build your list.</p>
-          <button class="btn-dest-explore" id="btn-wishlist-pkg-discover" style="margin: 0 auto; width: fit-content; padding: 0.6rem 1.5rem; font-size: 0.8rem;">
+        <div class="wishlist-empty-state" style="grid-column: 1 / -1;">
+          <i data-lucide="heart-off" style="width: 36px; height: 36px; color: var(--accent-gold); stroke-width: 1.5;"></i>
+          <h3>No Packages Saved</h3>
+          <p>Tap the heart icon on holiday packages to build your list.</p>
+          <button class="btn-wishlist-explore" id="btn-wishlist-pkg-discover">
             <span>Discover Packages</span>
-            <i data-lucide="compass" style="width: 14px; height: 14px; margin-left: 6px; vertical-align: middle;"></i>
+            <i data-lucide="compass" style="width: 15px; height: 15px;"></i>
           </button>
         </div>
       `;
@@ -5100,7 +5102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const destinationsView = document.getElementById('all-destinations-view');
     if (destinationsView) {
       destinationsView.style.display = 'block';
-      gsap.fromTo(destinationsView, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" });
+      gsap.fromTo(destinationsView, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", onComplete: () => gsap.set(destinationsView, { clearProps: "transform" }) });
     }
 
     // Scroll to top
@@ -5316,7 +5318,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const packagesView = document.getElementById('packages-view');
     if (packagesView) {
       packagesView.style.display = 'block';
-      gsap.fromTo(packagesView, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" });
+      gsap.fromTo(packagesView, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", onComplete: () => gsap.set(packagesView, { clearProps: "transform" }) });
     }
 
     // Update active nav-link highlighting
@@ -8168,7 +8170,7 @@ document.addEventListener("DOMContentLoaded", () => {
       option.addEventListener("click", (e) => {
         e.stopPropagation();
         selectedMilestoneIdx = idx;
-        
+
         // Hide dropdown
         const optionsList = document.getElementById("milestone-select-options-list");
         const trigger = document.getElementById("milestone-select-trigger");
@@ -8197,7 +8199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update Dropdown Trigger Details
     const selectedDest = milestoneDestinations[selectedMilestoneIdx];
     const isSelectedUnlocked = currentNestBalance >= selectedDest.limit;
-    
+
     const triggerTitle = document.getElementById("trigger-title");
     const triggerGoal = document.getElementById("trigger-goal");
     const triggerBadge = document.getElementById("trigger-status-badge");
@@ -8314,8 +8316,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Entrance Animations using GSAP
       if (window.gsap) {
-        gsap.fromTo("#milestone-spotlight-card .spotlight-animate", 
-          { opacity: 0, y: 15 }, 
+        gsap.fromTo("#milestone-spotlight-card .spotlight-animate",
+          { opacity: 0, y: 15 },
           { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }
         );
         // Animate the fill bar
@@ -10307,25 +10309,27 @@ document.addEventListener("DOMContentLoaded", () => {
       hamburgerOverlay.style.transform = 'translateX(0)';
       hamburgerOverlay.classList.add('open');
 
-      // Detect current path and dynamically tag active page in the drawer menu
-      const activeLink = document.querySelector('.nav-links .nav-link.active')?.id || '';
-      const path = window.location.pathname;
+      // Detect current visible view and dynamically tag active page in the drawer menu
+      let currentTarget = 'home';
+      if (document.getElementById('nest-dashboard-view')?.style.display === 'block') {
+        currentTarget = 'nest';
+      } else if (document.getElementById('packages-view')?.style.display === 'block') {
+        currentTarget = 'packages';
+      } else if (document.getElementById('all-destinations-view')?.style.display === 'block' || document.getElementById('destination-view')?.style.display === 'block') {
+        currentTarget = 'destinations';
+      } else if (document.getElementById('wishlist-view')?.style.display === 'block') {
+        currentTarget = 'wishlist';
+      } else if (document.getElementById('home-view')?.style.display === 'block') {
+        currentTarget = 'home';
+      }
+
       const links = hamburgerOverlay.querySelectorAll('.hamburger-link');
-
       links.forEach(link => {
-        link.classList.remove('active-route');
         const target = link.getAttribute('data-target');
-
-        if (target === 'home' && (path === '/' || activeLink.includes('home'))) {
+        if (target === currentTarget) {
           link.classList.add('active-route');
-        } else if (target === 'destinations' && (path.includes('destinations') || activeLink.includes('destinations'))) {
-          link.classList.add('active-route');
-        } else if (target === 'packages' && (path.includes('packages') || activeLink.includes('packages'))) {
-          link.classList.add('active-route');
-        } else if (target === 'nest' && (path.includes('nest') || activeLink.includes('nest'))) {
-          link.classList.add('active-route');
-        } else if (target === 'wishlist' && (path.includes('wishlist') || activeLink.includes('wishlist'))) {
-          link.classList.add('active-route');
+        } else {
+          link.classList.remove('active-route');
         }
       });
 

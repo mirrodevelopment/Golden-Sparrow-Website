@@ -36,4 +36,10 @@ public class RouteController {
         // Forward so that the frontend handles the Holiday Packages view.
         return "forward:/index.html";
     }
+
+    @GetMapping("/wishlist")
+    public String forwardWishlistToHome() {
+        // Forward so that the frontend handles the Wishlist view.
+        return "forward:/index.html";
+    }
 }

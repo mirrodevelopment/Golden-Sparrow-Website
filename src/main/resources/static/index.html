@@ -293,51 +293,52 @@
     <main class="smooth-scroll-content">
         <div id="home-view">
 
+            <!-- FLOATING NAVIGATION BAR (Liquid Glass) -->
+            <div class="header-wrapper gs-header-wrapper">
+                <header class="main-header glass-panel">
+                    <div class="header-container">
+                        <div class="brand-group">
+                            <!-- Golden Sparrow Branded Logo Image -->
+                            <img class="brand-logo" src="/images/logo.png" alt="Golden Sparrow Logo" width="38"
+                                height="38">
+                            <div class="brand-text">
+                                <span class="brand-name">GOLDEN SPARROW</span>
+                            </div>
+                        </div>
+
+                        <nav class="nav-links">
+                            <a href="/" class="nav-link active" id="nav-link-home">Home</a>
+                            <a href="/destinations" class="nav-link" id="nav-link-destinations">Destinations</a>
+                            <a href="/packages" class="nav-link" id="nav-link-packages">Packages</a>
+                        </nav>
+
+                        <div class="header-actions">
+                            <!-- Nest Balance Wallet Pill -->
+                            <div class="wallet-pill glass-panel">
+                                <div class="wallet-icon">
+                                    <i data-lucide="wallet"></i>
+                                </div>
+                                <div class="wallet-info">
+                                    <span class="wallet-label">Nest Balance</span>
+                                    <span class="wallet-amount">₹2,45,000</span>
+                                </div>
+                                <i data-lucide="chevron-down" class="wallet-arrow"></i>
+                            </div>
+
+                            <!-- Circular Hamburger Menu -->
+                            <button class="btn-menu glass-panel magnetic-btn">
+                                <i data-lucide="menu"></i>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            </div>
+
             <!-- ==============================================
          SECTION 01 — HERO (Cinematic Destination Carousel)
          ============================================== -->
             <section class="gs-hero" id="home" aria-label="Destination carousel">
 
-                <!-- FLOATING NAVIGATION BAR (Liquid Glass) -->
-                <div class="header-wrapper gs-header-wrapper">
-                    <header class="main-header glass-panel">
-                        <div class="header-container">
-                            <div class="brand-group">
-                                <!-- Golden Sparrow Branded Logo Image -->
-                                <img class="brand-logo" src="/images/logo.png" alt="Golden Sparrow Logo" width="38"
-                                    height="38">
-                                <div class="brand-text">
-                                    <span class="brand-name">GOLDEN SPARROW</span>
-                                </div>
-                            </div>
-
-                            <nav class="nav-links">
-                                <a href="/" class="nav-link active" id="nav-link-home">Home</a>
-                                <a href="/destinations" class="nav-link" id="nav-link-destinations">Destinations</a>
-                                <a href="/packages" class="nav-link" id="nav-link-packages">Packages</a>
-                            </nav>
-
-                            <div class="header-actions">
-                                <!-- Nest Balance Wallet Pill -->
-                                <div class="wallet-pill glass-panel">
-                                    <div class="wallet-icon">
-                                        <i data-lucide="wallet"></i>
-                                    </div>
-                                    <div class="wallet-info">
-                                        <span class="wallet-label">Nest Balance</span>
-                                        <span class="wallet-amount">₹2,45,000</span>
-                                    </div>
-                                    <i data-lucide="chevron-down" class="wallet-arrow"></i>
-                                </div>
-
-                                <!-- Circular Hamburger Menu -->
-                                <button class="btn-menu glass-panel magnetic-btn">
-                                    <i data-lucide="menu"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </header>
-                </div>
 
                 <!-- ── STATIC BACKGROUND (never changes) ─────────────────────────── -->
                 <div class="gs-bg" aria-hidden="true">
@@ -2699,7 +2700,7 @@
             <!-- Sticky Navigation Header for Packages View -->
             <div class="packages-header-wrapper" style="width: 100%; max-width: 1350px; margin: 0 auto; padding: 1.25rem 2rem 0; box-sizing: border-box;">
                 <header class="packages-header glass-panel" style="padding: 0.75rem 2rem; border-radius: 99px; border: 1px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 8px 32px rgba(30, 26, 21, 0.05);">
-                    <div class="packages-header-container" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="packages-header-container" style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
                         <button class="btn-packages-back magnetic-btn" id="btn-packages-back" aria-label="Go Back" style="display: flex; align-items: center; gap: 0.4rem; border: none; background: rgba(30, 26, 21, 0.03); padding: 8px 16px; border-radius: 99px; font-family: var(--font-sans); font-size: 0.72rem; font-weight: 700; color: var(--text-dark); cursor: pointer; transition: all 0.3s ease;">
                             <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i><span>Back</span>
                         </button>
@@ -3167,18 +3168,26 @@
             <div class="destinations-content-container">
                 <!-- Interactive Matchmaker / Search Hero Section -->
                 <div class="destinations-search-hero">
-                    <div class="search-hero-left">
-                        <span class="destinations-overtitle">LUXURY DESTINATIONS</span>
-                        <h1 class="destinations-title">Discover Your Universe</h1>
-                        <p class="destinations-subtitle">Filter the world by your custom travel vibes or search by
-                            keywords.</p>
+                    <!-- HERO DISPLAY BANNER SECTION -->
+                    <div class="destinations-hero-section glass-panel" style="position: relative; border-radius: 24px; overflow: visible; padding: 4.5rem 4rem 6rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; box-sizing: border-box; width: 100%; margin-bottom: 2rem;">
+                        <div class="destinations-hero-content" style="max-width: 780px; color: var(--text-dark); text-align: left; background: transparent; border: none; padding: 0; box-shadow: none; box-sizing: border-box;">
+                            <span class="curated-tag" style="background: var(--accent-gold); color: #FFF; padding: 6px 14px; border-radius: 99px; font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block;">Luxury Destinations</span>
+                            <h1 class="destinations-hero-title" style="font-family: var(--font-serif); font-size: 3.15rem; font-weight: 700; color: var(--text-dark); margin: 1rem 0 0.75rem; line-height: 1.15;">Discover Your Universe</h1>
+                            <p class="destinations-hero-subtitle" style="font-family: var(--font-sans); font-size: 1.12rem; color: var(--text-muted); line-height: 1.4; margin: 0 0 1.75rem;">Filter the world by your custom travel vibes or search by keywords.</p>
+                            
+                            <!-- Trust indicators -->
+                            <div class="destinations-trust-badges" style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+                                <span class="trust-badge-item" style="display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-sans); font-size: 0.82rem; font-weight: 700; color: var(--text-dark);"><i data-lucide="globe" style="width: 15px; height: 15px; color: var(--accent-gold);"></i> 10+ Luxury Escapes</span>
+                                <span class="trust-badge-item" style="display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-sans); font-size: 0.82rem; font-weight: 700; color: var(--text-dark);"><i data-lucide="sparkles" style="width: 15px; height: 15px; color: var(--accent-gold);"></i> Vibe Matchmaker</span>
+                                <span class="trust-badge-item" style="display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-sans); font-size: 0.82rem; font-weight: 700; color: var(--text-dark);"><i data-lucide="compass" style="width: 15px; height: 15px; color: var(--accent-gold);"></i> Handcrafted Itineraries</span>
+                            </div>
+                        </div>
 
-                        <!-- Real-time Search Box -->
-                        <div class="destinations-search-box glass-panel">
-                            <i data-lucide="search" class="search-icon"></i>
-                            <input type="text" id="destinations-search-input"
-                                placeholder="Search by destination, country, or season...">
-                            <button class="btn-clear-search" id="btn-clear-search" style="display: none;">
+                        <!-- Real-time Search Box floated at the bottom -->
+                        <div class="destinations-search-box glass-panel" style="position: absolute; bottom: -28px; left: 4rem; right: 4rem; background: rgba(255,255,255,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.5); padding: 1.15rem 1.5rem; border-radius: 99px; display: flex; align-items: center; gap: 0.9rem; box-shadow: 0 12px 30px rgba(30, 26, 21, 0.08); z-index: 10; box-sizing: border-box; width: auto; max-width: none;">
+                            <i data-lucide="search" class="search-icon" style="color: var(--accent-gold); width: 18px; height: 18px;"></i>
+                            <input type="text" id="destinations-search-input" placeholder="Search by destination, country, or season..." style="flex-grow: 1; background: transparent; border: none; font-family: var(--font-sans); font-size: 0.95rem; color: var(--text-dark); outline: none;">
+                            <button class="btn-clear-search" id="btn-clear-search" style="display: none; background: transparent; border: none; cursor: pointer; color: var(--text-light); display: flex; align-items: center; justify-content: center; padding: 0;">
                                 <i data-lucide="x"></i>
                             </button>
                         </div>
@@ -3276,30 +3285,35 @@
             </div>
 
             <div class="destinations-content-container">
-                <div class="destinations-search-hero" style="margin-bottom: 2.5rem;">
-                    <div class="search-hero-left">
-                        <span class="destinations-overtitle">YOUR COLLECTION</span>
-                        <h1 class="destinations-title">Your Wishlist</h1>
-                        <p class="destinations-subtitle">Explore the custom destinations and packages you've saved.</p>
+                <!-- WISHLIST HERO BANNER SECTION -->
+                <div class="destinations-hero-section glass-panel" style="position: relative; border-radius: 24px; overflow: visible; padding: 4rem 4rem 4.5rem; display: flex; flex-direction: column; justify-content: center; min-height: 260px; box-sizing: border-box; width: 100%; margin-bottom: 2.5rem;">
+                    <div class="destinations-hero-content" style="max-width: 780px; color: var(--text-dark); text-align: left; background: transparent; border: none; padding: 0; box-shadow: none; box-sizing: border-box;">
+                        <span class="curated-tag" style="background: var(--accent-gold); color: #FFF; padding: 6px 14px; border-radius: 99px; font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block;">Your Collection</span>
+                        <h1 class="destinations-hero-title" style="font-family: var(--font-serif); font-size: 3.15rem; font-weight: 700; color: var(--text-dark); margin: 1rem 0 0.75rem; line-height: 1.15;">Your Wishlist</h1>
+                        <p class="destinations-hero-subtitle" style="font-family: var(--font-sans); font-size: 1.12rem; color: var(--text-muted); line-height: 1.4; margin: 0;">Explore the custom destinations and packages you've saved.</p>
                     </div>
                 </div>
 
-                <!-- Section 1: Saved Destinations -->
-                <div class="wishlist-section-header" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
-                    <i data-lucide="map" style="width: 22px; height: 22px; color: var(--accent-gold);"></i>
-                    <h2 style="font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin: 0;">Wishlisted Destinations</h2>
-                </div>
-                <div class="destinations-grid" id="wishlist-destinations-grid" style="margin-bottom: 4rem;">
-                    <!-- Dynamically populated -->
+                <!-- Section 1: Saved Destinations Panel -->
+                <div class="wishlist-category-panel glass-panel">
+                    <div class="wishlist-section-header">
+                        <i data-lucide="map"></i>
+                        <h2>Saved Destinations</h2>
+                    </div>
+                    <div class="destinations-grid" id="wishlist-destinations-grid">
+                        <!-- Dynamically populated -->
+                    </div>
                 </div>
 
-                <!-- Section 2: Saved Holiday Packages -->
-                <div class="wishlist-section-header" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
-                    <i data-lucide="palmtree" style="width: 22px; height: 22px; color: var(--accent-gold);"></i>
-                    <h2 style="font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin: 0;">Wishlisted Holiday Packages</h2>
-                </div>
-                <div class="packages-cards-grid" id="wishlist-packages-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 2rem; width: 100%; margin-bottom: 4rem;">
-                    <!-- Dynamically populated -->
+                <!-- Section 2: Saved Holiday Packages Panel -->
+                <div class="wishlist-category-panel glass-panel">
+                    <div class="wishlist-section-header">
+                        <i data-lucide="palmtree"></i>
+                        <h2>Saved Holiday Packages</h2>
+                    </div>
+                    <div class="packages-cards-grid" id="wishlist-packages-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 2rem; width: 100%;">
+                        <!-- Dynamically populated -->
+                    </div>
                 </div>
             </div>
         </div>

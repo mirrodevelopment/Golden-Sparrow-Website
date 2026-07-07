@@ -176,21 +176,54 @@ button {
   justify-content: center;
   pointer-events: none;
   /* Let events pass through the outer region */
-  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease;
 }
 
 .header-wrapper.header-hidden {
   transform: translate(-50%, calc(-100% - 1.5rem));
+  opacity: 0;
+  pointer-events: none;
 }
 
-.main-header {
+/* Smart hide/show animations for subpage sticky header wrappers */
+.packages-header-wrapper,
+.destinations-header-wrapper,
+.dashboard-header-wrapper,
+.detail-header-wrapper {
+  position: fixed !important;
+  top: 1.25rem !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 90% !important;
+  max-width: 1200px !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  justify-content: center !important;
+  pointer-events: none !important;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease !important;
+  padding: 0 !important;
+}
+
+.packages-header-wrapper.header-hidden,
+.destinations-header-wrapper.header-hidden,
+.dashboard-header-wrapper.header-hidden,
+.detail-header-wrapper.header-hidden {
+  transform: translate(-50%, calc(-100% - 1.5rem)) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.main-header,
+.packages-header,
+.destinations-header,
+.dashboard-header,
+.detail-header {
   width: 100%;
   height: 4.8rem;
   border-radius: 999px;
   display: flex;
   align-items: center;
-  pointer-events: auto;
-  /* Enable interaction for the navbar elements */
+  pointer-events: auto !important;
 }
 
 .main-header.glass-panel {
@@ -2978,22 +3011,41 @@ svg defs {
     margin-bottom: 1.25rem !important;
   }
 
-  /* OneCircle Partnership Card centering */
+  /* OneCircle Partnership Card left-aligned and compact */
+  .card-partnership {
+    min-height: auto !important;
+    height: auto !important;
+    padding: 4.8rem 1.8rem 1.8rem !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .card-partnership .offer-card-badge {
+    left: 1.8rem !important;
+    transform: none !important;
+  }
+
   .partnership-inner {
     width: 100% !important;
-    align-items: center !important;
-    text-align: center !important;
-    padding: 2.2rem 1.25rem !important;
+    height: auto !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    padding: 0 !important;
   }
 
   .partnership-inner .card-title,
   .partnership-inner .card-subtext {
-    text-align: center !important;
+    text-align: left !important;
     width: 100% !important;
   }
 
+  .onecircle-logo-group {
+    align-items: flex-start !important;
+    margin-bottom: 1.5rem !important;
+  }
+
   .partnership-inner .btn-card-arrow {
-    margin: 0 auto !important;
+    margin: 1.25rem 0 0 auto !important;
   }
 
   /* Scenic and split cards footers */
@@ -3004,40 +3056,49 @@ svg defs {
 
   /* Split editorial card */
   .card-split-left {
-    padding: 1.8rem 1.25rem !important;
+    padding: 4.8rem 1.8rem 1.8rem !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
+    align-items: flex-start !important;
+    text-align: left !important;
     width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  .card-editorial-split .offer-card-badge {
+    left: 1.8rem !important;
+    transform: none !important;
   }
 
   .split-left-content {
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
+    align-items: flex-start !important;
+    text-align: left !important;
     width: 100% !important;
+    height: auto !important;
+    margin-top: 0.5rem !important;
   }
 
   .split-left-content .card-title,
   .split-left-content .card-subtext {
-    text-align: center !important;
+    text-align: left !important;
     width: 100% !important;
   }
 
   .split-left-footer {
     width: 100% !important;
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
-    justify-content: center !important;
-    gap: 0.75rem !important;
-    margin-top: 1rem !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+    margin-top: 1.5rem !important;
   }
 
   .ramoji-logo {
-    justify-content: center !important;
+    justify-content: flex-start !important;
   }
 }
 
@@ -14230,6 +14291,31 @@ input:checked+.slider-switch:before {
     width: 12px !important;
     height: 12px !important;
   }
+
+  /* Vibe filters chips wrap for mobile */
+  .vibe-filters-container {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+
+  .vibe-filter-btn {
+    padding: 0.4rem 1rem !important;
+    font-size: 0.76rem !important;
+    gap: 0.4rem !important;
+  }
+
+  /* Packages trust banner stack for mobile */
+  .pkg-trust-banner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    padding: 1.25rem 1.5rem !important;
+  }
+
+  .trust-banner-item {
+    width: 100% !important;
+  }
 }
 
 .vibe-filters-container {
@@ -15034,24 +15120,23 @@ input:checked+.slider-switch:before {
   min-height: 100vh;
   background: var(--bg-cream);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Header & Sidebar Side Padding Consistency */
 .packages-header-wrapper {
-  position: sticky !important;
-  top: 0 !important;
-  width: 100% !important;
-  z-index: 100 !important;
-  box-sizing: border-box !important;
-  padding: 1.5rem 4.5rem 0 !important;
-  transition: padding 0.3s ease !important;
+  box-sizing: border-box;
+  transition: padding 0.3s ease;
 }
 
 .packages-header {
   width: 100% !important;
   max-width: 1560px !important;
   margin: 0 auto !important;
+}
+
+.packages-header-container {
+  width: 100%;
 }
 
 .packages-body-container {
@@ -15294,9 +15379,6 @@ input:checked+.slider-switch:before {
 }
 
 @media (max-width: 1024px) {
-  .packages-header-wrapper {
-    padding: 1.5rem 2.5rem 0 !important;
-  }
 
   .packages-body-container {
     padding: 2rem 2.5rem 4rem !important;
@@ -15343,9 +15425,6 @@ input:checked+.slider-switch:before {
 }
 
 @media (max-width: 768px) {
-  .packages-header-wrapper {
-    padding: 1rem 1.5rem 0 !important;
-  }
 
   .packages-header {
     height: auto !important;
@@ -17049,4 +17128,178 @@ input:checked+.slider-switch:before {
 .milestones-timeline-line,
 .milestones-timeline-progress {
   display: none !important;
+}
+
+/* Subpages layout padding updates for fixed floating glass navbar */
+.all-destinations-view,
+.packages-view-container,
+.nest-dashboard-view,
+.destination-detail-view {
+  padding-top: 8.5rem !important;
+}
+
+@media (max-width: 768px) {
+  .all-destinations-view,
+  .packages-view-container,
+  .nest-dashboard-view,
+  .destination-detail-view {
+    padding-top: 7.5rem !important;
+  }
+
+  .packages-header-wrapper,
+  .destinations-header-wrapper,
+  .dashboard-header-wrapper,
+  .detail-header-wrapper {
+    top: 0.75rem !important;
+    width: 92% !important;
+    padding: 0 !important;
+  }
+
+  .destinations-hero-section {
+    padding: 2.5rem 1.25rem 4.5rem !important;
+    min-height: auto !important;
+    background-image: none !important;
+  }
+
+  .destinations-hero-content {
+    text-align: center !important;
+    align-items: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 auto !important;
+  }
+
+  .destinations-hero-title {
+    font-size: 2.2rem !important;
+  }
+
+  .destinations-trust-badges {
+    justify-content: center !important;
+    gap: 0.8rem !important;
+  }
+
+  .destinations-search-box {
+    left: 1rem !important;
+    right: 1rem !important;
+    bottom: -24px !important;
+  }
+}
+
+/* ===== WISHLIST VIEW STYLING ===== */
+.wishlist-section-header {
+  margin-top: 3.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-bottom: 1px solid rgba(169, 124, 55, 0.15);
+  padding-bottom: 0.8rem;
+}
+
+.wishlist-section-header h2 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.wishlist-section-header i {
+  color: var(--accent-gold);
+  width: 24px;
+  height: 24px;
+}
+
+.wishlist-empty-state {
+  text-align: center;
+  padding: 4.5rem 2rem;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(25px) saturate(140%);
+  -webkit-backdrop-filter: blur(25px) saturate(140%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 15px 35px rgba(30, 26, 21, 0.04);
+  max-width: 540px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  box-sizing: border-box;
+}
+
+.wishlist-empty-state h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0.5rem 0 0.25rem;
+}
+
+.wishlist-empty-state p {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  max-width: 320px;
+  margin: 0 0 1.25rem;
+  line-height: 1.4;
+}
+
+.btn-wishlist-explore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.8rem;
+  border-radius: 99px;
+  background: var(--text-dark);
+  color: #FFF;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(30, 26, 21, 0.15);
+}
+
+.btn-wishlist-explore:hover {
+  background: var(--accent-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(169, 124, 55, 0.25);
+}
+
+.btn-wishlist-explore:active {
+  transform: translateY(0);
+}
+
+.wishlist-category-panel {
+  padding: 3.5rem;
+  border-radius: 28px;
+  margin-bottom: 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .wishlist-section-header {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.6rem;
+  }
+  
+  .wishlist-section-header h2 {
+    font-size: 1.4rem;
+  }
+  
+  .wishlist-empty-state {
+    padding: 3rem 1.5rem;
+    margin: 1rem auto;
+  }
+
+  .wishlist-category-panel {
+    padding: 1.5rem !important;
+    margin-bottom: 2.5rem !important;
+  }
 }

@@ -1327,9 +1327,11 @@ if (typeof module !== 'undefined' && module.exports) {
     .detail-header-wrapper {
       position: absolute !important;
       top: 1.25rem !important;
-      left: 0 !important;
-      width: 100% !important;
-      z-index: 100 !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      width: 90% !important;
+      max-width: 1200px !important;
+      z-index: 1000 !important;
       background: transparent !important;
       box-shadow: none !important;
       border: none !important;
