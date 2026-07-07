@@ -4579,6 +4579,10 @@ document.addEventListener("DOMContentLoaded", () => {
       isHomeVisible = false;
     }
 
+    // Hide wishlist view
+    const wishlistView = document.getElementById('wishlist-view');
+    if (wishlistView) wishlistView.style.display = 'none';
+
     // Hide home view
     const homeView = document.getElementById('home-view');
     if (homeView) homeView.style.display = 'none';
@@ -4628,6 +4632,10 @@ document.addEventListener("DOMContentLoaded", () => {
       savedScrollY = window.scrollY;
       isHomeVisible = false;
     }
+
+    // Hide wishlist view
+    const wishlistView = document.getElementById('wishlist-view');
+    if (wishlistView) wishlistView.style.display = 'none';
 
     // Hide dashboard view
     const nestDashboard = document.getElementById('nest-dashboard-view');
@@ -4712,6 +4720,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function showHomeView() {
     updateNavbarHighlight('home');
     isHomeVisible = true;
+
+    // Hide wishlist view
+    const wishlistView = document.getElementById('wishlist-view');
+    if (wishlistView) wishlistView.style.display = 'none';
 
     // Hide dashboard view
     const nestDashboard = document.getElementById('nest-dashboard-view');
@@ -5074,6 +5086,10 @@ document.addEventListener("DOMContentLoaded", () => {
       isHomeVisible = false;
     }
 
+    // Hide wishlist view
+    const wishlistView = document.getElementById('wishlist-view');
+    if (wishlistView) wishlistView.style.display = 'none';
+
     // Hide home view
     const homeView = document.getElementById('home-view');
     if (homeView) homeView.style.display = 'none';
@@ -5293,6 +5309,10 @@ document.addEventListener("DOMContentLoaded", () => {
       savedScrollY = window.scrollY;
       isHomeVisible = false;
     }
+
+    // Hide wishlist view
+    const wishlistView = document.getElementById('wishlist-view');
+    if (wishlistView) wishlistView.style.display = 'none';
 
     // Hide home view
     const homeView = document.getElementById('home-view');
