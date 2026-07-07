@@ -1990,6 +1990,24 @@ document.addEventListener("DOMContentLoaded", () => {
       image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
       slug: "greece",
       icon: "palmtree"
+    },
+    {
+      minLimit: 180000,
+      name: "Glass Igloo in Finland",
+      desc: "Sleep under the dancing Northern Lights in a heated glass dome.",
+      imageIdx: 6,
+      image: "https://images.unsplash.com/photo-1520769669658-f07657f5a307?auto=format&fit=crop&w=600&q=80",
+      slug: "finland",
+      icon: "sparkles"
+    },
+    {
+      minLimit: 320000,
+      name: "Desert Oasis in Dubai",
+      desc: "Stay in ultra-luxury Bedouin tents nestled within rolling golden dunes.",
+      imageIdx: 7,
+      image: "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80",
+      slug: "dubai",
+      icon: "tent"
     }
   ];
 
@@ -2077,8 +2095,110 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="card-stack-desc">${dest.desc}</p>
         `;
 
+        // Touch/Mouse swiping drag interaction variables
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let dragDistance = 0;
+
+        const startDrag = (clientX, clientY) => {
+          if (!card.classList.contains("position-0")) return;
+          isDragging = true;
+          startX = clientX;
+          startY = clientY;
+          dragDistance = 0;
+          card.style.transition = "none";
+          card.style.cursor = "grabbing";
+        };
+
+        const moveDrag = (clientX, clientY) => {
+          if (!isDragging) return;
+          const deltaX = clientX - startX;
+          const deltaY = clientY - startY;
+          dragDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+          const rotation = deltaX * 0.06;
+
+          gsap.set(card, {
+            x: deltaX,
+            y: deltaY,
+            rotation: rotation,
+            overwrite: "auto"
+          });
+        };
+
+        const endDrag = (clientX, clientY) => {
+          if (!isDragging) return;
+          isDragging = false;
+          card.style.cursor = "";
+
+          const deltaX = clientX - startX;
+          const swipeThreshold = 80;
+
+          if (Math.abs(deltaX) > swipeThreshold) {
+            const direction = deltaX > 0 ? "right" : "left";
+            rotateDeck(direction);
+          } else {
+            gsap.to(card, {
+              x: 0,
+              y: 0,
+              rotation: 0,
+              duration: 0.3,
+              ease: "power2.out"
+            });
+          }
+        };
+
+        // Window listeners to handle mouse moves outside the card boundaries cleanly
+        const handleMouseMove = (e) => {
+          moveDrag(e.clientX, e.clientY);
+        };
+        const handleMouseUp = (e) => {
+          endDrag(e.clientX, e.clientY);
+          window.removeEventListener("mousemove", handleMouseMove);
+          window.removeEventListener("mouseup", handleMouseUp);
+        };
+
+        const handleTouchMove = (e) => {
+          if (!isDragging) return;
+          if (e.cancelable) e.preventDefault();
+          const touch = e.touches[0];
+          moveDrag(touch.clientX, touch.clientY);
+        };
+        const handleTouchEnd = (e) => {
+          const touch = e.changedTouches[0];
+          endDrag(touch.clientX, touch.clientY);
+          window.removeEventListener("touchmove", handleTouchMove);
+          window.removeEventListener("touchend", handleTouchEnd);
+        };
+
+        card.addEventListener("mousedown", (e) => {
+          if (e.target.closest(".card-travel-btn")) return;
+          e.preventDefault();
+          startDrag(e.clientX, e.clientY);
+          window.addEventListener("mousemove", handleMouseMove);
+          window.addEventListener("mouseup", handleMouseUp);
+        });
+
+        card.addEventListener("dragstart", (e) => {
+          e.preventDefault();
+        });
+
+        card.addEventListener("touchstart", (e) => {
+          if (e.target.closest(".card-travel-btn")) return;
+          const touch = e.touches[0];
+          startDrag(touch.clientX, touch.clientY);
+          window.addEventListener("touchmove", handleTouchMove, { passive: false });
+          window.addEventListener("touchend", handleTouchEnd, { passive: true });
+        }, { passive: true });
+
         card.addEventListener("click", (e) => {
           if (e.target.closest(".card-travel-btn")) return;
+          // If the user actually dragged the card rather than clicking, ignore the click event
+          if (dragDistance > 10) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+          }
           rotateDeck();
         });
 
@@ -2100,16 +2220,21 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    function rotateDeck() {
+    function rotateDeck(direction = null) {
       const cards = deckContainer.querySelectorAll(".unlocked-stacked-card");
       if (cards.length <= 1) return;
 
       const topCard = deckContainer.querySelector(".unlocked-stacked-card.position-0");
       if (!topCard) return;
 
-      const targetX = nextSlideDirection === "left" ? -150 : 150;
-      const targetRot = nextSlideDirection === "left" ? -12 : 12;
-      nextSlideDirection = nextSlideDirection === "left" ? "right" : "left";
+      const dir = direction || nextSlideDirection;
+      const targetX = dir === "left" ? -300 : 300;
+      const targetRot = dir === "left" ? -15 : 15;
+
+      // Update nextSlideDirection for subsequent auto/click rotations
+      if (!direction) {
+        nextSlideDirection = nextSlideDirection === "left" ? "right" : "left";
+      }
 
       gsap.to(topCard, {
         x: targetX,
@@ -2143,8 +2268,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 targetX = -15; targetY = 25; targetRot = -4; targetScale = 0.9; targetOpacity = 0.75;
               } else if (idx === 3) {
                 targetX = 20; targetY = 35; targetRot = 5; targetScale = 0.85; targetOpacity = 0.6;
-              } else {
+              } else if (idx === 4) {
                 targetX = 0; targetY = 45; targetRot = 0; targetScale = 0.8; targetOpacity = 0.4;
+              } else if (idx === 5) {
+                targetX = -10; targetY = 50; targetRot = -3; targetScale = 0.75; targetOpacity = 0.25;
+              } else if (idx === 6) {
+                targetX = 15; targetY = 55; targetRot = 4; targetScale = 0.7; targetOpacity = 0.15;
+              } else {
+                targetX = 0; targetY = 60; targetRot = 0; targetScale = 0.65; targetOpacity = 0.05;
               }
 
               gsap.to(c, {
@@ -3028,12 +3159,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Mobile Touch Swiping (Up / Down)
       let touchStartY = 0;
+      let touchStartX = 0;
       let touchEndY = 0;
       const swipeThreshold = 40;
 
       viewport.addEventListener("touchstart", (e) => {
-        touchStartY = e.changedTouches[0].screenY;
+        const touch = e.touches && e.touches.length ? e.touches[0] : e.changedTouches[0];
+        touchStartY = touch.screenY;
+        touchStartX = touch.screenX;
       }, { passive: true });
+
+      viewport.addEventListener("touchmove", (e) => {
+        if (window.innerWidth > 768) return;
+
+        // Prevent native scrolling only if the touch started on a card
+        const onCard = e.target.closest(".trending-card") || e.target.closest(".trending-card-wrapper");
+        if (!onCard) return;
+
+        const touch = e.touches && e.touches.length ? e.touches[0] : e.changedTouches[0];
+        const currentY = touch.screenY;
+        const currentX = touch.screenX;
+        const diffY = touchStartY - currentY;
+        const diffX = touchStartX - currentX;
+
+        // If it's primarily a vertical swipe
+        if (Math.abs(diffY) > Math.abs(diffX)) {
+          // Allow page scrolling at boundaries
+          const isAtTopLimit = currentIndex === 0 && diffY < 0;
+          const isAtBottomLimit = currentIndex === total - 1 && diffY > 0;
+
+          if (!isAtTopLimit && !isAtBottomLimit) {
+            if (e.cancelable) {
+              e.preventDefault();
+            }
+          }
+        }
+      }, { passive: false });
 
       viewport.addEventListener("touchend", (e) => {
         touchEndY = e.changedTouches[0].screenY;
@@ -7602,7 +7763,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 2. Check for dropdown toggle clicks (for main, detail, and festival headers)
-    const walletToggle = e.target.closest(".main-header .wallet-pill, .detail-header .wallet-pill, .fv-wallet, .all-destinations-view .wallet-pill");
+    const walletToggle = e.target.closest(".main-header .wallet-pill, .detail-header .wallet-pill, .fv-wallet, .all-destinations-view .wallet-pill, .destinations-header .wallet-pill, .packages-header .wallet-pill");
     if (walletToggle) {
       e.preventDefault();
       e.stopPropagation();
